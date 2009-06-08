@@ -1,0 +1,10 @@
+page.8 < plugin.tx_pxphpids_pi1
+
+plugin.tx_pxphpids {
+	_CSS_DEFAULT_STYLE (
+        h6 { margin:0; padding:0; }
+        .ok_box { border:1px solid red; background-color:#fee; padding:5px; }
+        .red_box { border:1px solid #90DE00; background-color:#F3FFDF; padding:5px; }
+        .error_box { border:1px solid red; background-color:#fee; padding:5px; font-weight:bold; }
+    )
+}

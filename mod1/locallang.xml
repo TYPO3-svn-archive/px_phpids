@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;tools_txpxphpidsM1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">PHPIDS</label>
+			<label index="function1">Show all Impacts</label>
+			<label index="function2">Show all Impacts over 50</label>
+			<label index="function2">Show all recent Impacts</label>
+		</languageKey>
+	</data>
+</T3locallang>
