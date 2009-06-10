@@ -45,6 +45,9 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 	 * @return	The content that is displayed on the website
 	 */
 	function main($content,$conf)	{
+        $this->pi_USER_INT_obj=1;
+        $this->conf = $conf;
+
 		/*
          * Settings
          */
@@ -68,8 +71,7 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 
         try{
             /*
-            * It's pretty easy to get the PHPIDS running
-            * 1. Define what to scan
+            * Define what to scan
             *
             * Please keep in mind what array_merge does and how this might interfer
             * with your variables_order settings
@@ -83,7 +85,7 @@ class tx_pxphpids_pi1 extends tslib_pibase {
             $init = IDS_Init::init($this->path.'IDS/Config/Config.ini');
 
              /**
-             * You can also reset the whole configuration
+             * You can reset the whole configuration
              * array or merge in own data
              *
              * This usage doesn't overwrite already existing values
@@ -97,14 +99,33 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 
             $init->config['General']['base_path'] = $this->path.'IDS/';
             $init->config['General']['use_base_path'] = true;
-            $init->config['Caching']['caching'] = 'none';
 
-             // 2. Initiate the PHPIDS and fetch the results
+            $init->config['Caching']['caching'] = $this->conf['caching'];
+
+            $init->config['Logging']['recipients'] = Array();
+            if ($this->conf['recipients']) $init->config['Logging']['recipients'][] = $this->conf['recipients'];
+            if ($this->conf['subject']) $init->config['Logging']['subject'] = $this->conf['subject'];
+            if ($this->conf['recipients']) $init->config['Logging']['header'] = $this->conf['header'];
+            if ($this->conf['path'])  $init->config['Logging']['path'] = $this->conf['path'];
+
+            $init->config['Logging']['user'] = TYPO3_db_username;
+            $init->config['Logging']['password'] = TYPO3_db_password;
+            $init->config['Logging']['table'] = 'tx_pxphpids_log';
+            $init->config['Logging']['wrapper'] = 'mysql:'.TYPO3_db_host.';port=3306;dbname='. TYPO3_db;
+
+            if($this->conf['caching']) $init->config['Caching']['caching'] = $this->conf['caching'];
+            if($this->conf['expiration_time'])  $init->config['Caching']['expiration_time'] = $this->conf['expiration_time'];
+            $init->config['Caching']['user'] = TYPO3_db_username;
+            $init->config['Caching']['password'] = TYPO3_db_password;
+            $init->config['Caching']['table'] = 'tx_pxphpids_cache';
+            $init->config['Caching']['wrapper'] =  'mysql:'.TYPO3_db_host.';port=3306;dbname='. TYPO3_db;
+
+             // Initiate the PHPIDS and fetch the results
             $ids = new IDS_Monitor($request, $init);
             $result = $ids->run();
 
             /*
-            * That's it - now you can analyze the results:
+            * Now you can analyze the results:
             *
             * In the result object you will find any suspicious
             * fields of the passed array enriched with additional info

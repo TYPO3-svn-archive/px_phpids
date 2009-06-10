@@ -1,6 +1,30 @@
 page.8 < plugin.tx_pxphpids_pi1
 
-plugin.tx_pxphpids {
+plugin.tx_pxphpids_pi1 {
+
+    filter_type     = {$plugin.tx_pxphpids_pi1.filter_type}
+    base_path       = {$plugin.tx_pxphpids_pi1.base_path}
+    use_base_path   = {$plugin.tx_pxphpids_pi1.use_base_path}
+    filter_path     = {$plugin.tx_pxphpids_pi1.filter_path}
+    tmp_path        = {$plugin.tx_pxphpids_pi1.tmp_path}
+    scan_keys       = {$plugin.tx_pxphpids_pi1.scan_keys}
+	HTML_Purifier_Path	= {$plugin.tx_pxphpids_pi1.HTML_Purifier_Path}
+	HTML_Purifier_Cache = {$plugin.tx_pxphpids_pi1.HTML_Purifier_Cache}
+    html            = {$plugin.tx_pxphpids_pi1.html}
+    json            = {$plugin.tx_pxphpids_pi1.json}
+    exceptions_0   = {$plugin.tx_pxphpids_pi1.exceptions_0}
+    exceptions_1   = {$plugin.tx_pxphpids_pi1.exceptions_1}
+    exceptions_2   = {$plugin.tx_pxphpids_pi1.exceptions_2}
+    min_php_version = {$plugin.tx_pxphpids_pi1.min_php_version}
+    file_logging_path = {$plugin.tx_pxphpids_pi1.file_logging_path}
+    envelope        = {$plugin.tx_pxphpids_pi1.envelope}
+    safemode        = {$plugin.tx_pxphpids_pi1.safemode}
+    urlencode       = {$plugin.tx_pxphpids_pi1.urlencode}
+    allowed_rate    = {$plugin.tx_pxphpids_pi1.allowed_rate}
+    caching         = {$plugin.tx_pxphpids_pi1.caching}
+    expiration_time = {$plugin.tx_pxphpids_pi1.expiration_time}
+    file_cache_path = {$plugin.tx_pxphpids_pi1.file_cache_path}
+
 	_CSS_DEFAULT_STYLE (
         h6 { margin:0; padding:0; }
         .ok_box { border:1px solid red; background-color:#fee; padding:5px; }

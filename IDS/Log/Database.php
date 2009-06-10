@@ -124,19 +124,17 @@ class IDS_Log_Database implements IDS_Log_Interface
     
     protected function __construct($config) 
     {
-        include 'typo3conf/localconf.php';
-
         if ($config instanceof IDS_Init) {
-            $this->wrapper  = 'mysql:host=localhost;port=3306;dbname='.$typo_db;
-            $this->user     = $typo_db_username;
-            $this->password = $typo_db_password;
-            $this->table    = 'tx_pxphpids_log';
+            $this->wrapper  = $config->config['Logging']['wrapper'];
+            $this->user     = $config->config['Logging']['user'];
+            $this->password = $config->config['Logging']['password'];
+            $this->table    = $config->config['Logging']['table'];
 
         } elseif (is_array($config)) {
-            $this->wrapper  = 'mysql:host=localhost;port=3306;dbname='.$typo_db;
-            $this->user     = $typo_db_username;
-            $this->password = $typo_db_password;
-            $this->table    = 'tx_pxphpids_log';
+            $this->wrapper  = $config['wrapper'];
+            $this->user     = $config['user'];
+            $this->password = $config['password'];
+            $this->table    = $config['table'];
         }
 
         // determine correct IP address

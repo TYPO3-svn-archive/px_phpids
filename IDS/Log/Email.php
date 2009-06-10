@@ -145,23 +145,22 @@ class IDS_Log_Email implements IDS_Log_Interface
      */
     protected function __construct($config)
     {
-        include 'typo3conf/localconf.php';
 
         if ($config instanceof IDS_Init) {
-            $this->recipients   = $TYPO3_CONF_VARS['BE']['warning_email_addr'] ? $TYPO3_CONF_VARS['BE']['warning_email_addr'] : $config->config['Logging']['recipients'];
-            $this->subject      = "PHPIDS detected an intrusion attempt on ".$_SERVER['SERVER_NAME']." (".$_SERVER['SERVER_ADDR'].")!";
-            $this->headers      = $TYPO3_CONF_VARS['BE']['warning_email_addr'] ? "From: <".$_SERVER['SERVER_NAME']."> ".$TYPO3_CONF_VARS['BE']['warning_email_addr'] : $config->config['Logging']['header'];
+            $this->recipients   = $config->config['Logging']['recipients'];
+            $this->subject      = $config->config['Logging']['subject'];
+            $this->headers      = $config->config['Logging']['header'];
             $this->envelope     = $config->config['Logging']['envelope'];
             $this->safemode     = $config->config['Logging']['safemode'];
             $this->urlencode    = $config->config['Logging']['urlencode'];
             $this->allowed_rate = $config->config['Logging']['allowed_rate'];
-            $this->tmp_path     = $config->getBasePath() 
+            $this->tmp_path     = $config->getBasePath()
                 . $config->config['General']['tmp_path'];
 
         } elseif (is_array($config)) {
-            $this->recipients[]      = $TYPO3_CONF_VARS['BE']['warning_email_addr'] ? $TYPO3_CONF_VARS['BE']['warning_email_addr'] : $config['recipients'];
-            $this->subject           = "PHPIDS detected an intrusion attempt on ".$_SERVER['SERVER_NAME']." (".$_SERVER['SERVER_ADDR'].")!";
-            $this->additionalHeaders = $TYPO3_CONF_VARS['BE']['warning_email_addr'] ? "From: <".$_SERVER['SERVER_NAME']."> ".$TYPO3_CONF_VARS['BE']['warning_email_addr'] : "From: <pixabit> info@pixabit.de";
+            $this->recipients[]      = $config['recipients'];
+            $this->subject           = $config['subject'];
+            $this->additionalHeaders = $config['header'];
         }
 
         // determine correct IP address and concat them if necessary

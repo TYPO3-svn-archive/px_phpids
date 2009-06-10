@@ -90,16 +90,11 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * 
      * @return void
      */
-    public function __construct($type, $init) 
+    public function __construct($type, $init)
     {
-        include 'typo3conf/localconf.php';
 
         $this->type   = $type;
         $this->config = $init->config['Caching'];
-        $this->config['wrapper'] = 'mysql:host=localhost;port=3306;dbname='.$typo_db;        
-        $this->config['user'] = $typo_db_username;
-        $this->config['password'] = $typo_db_password;
-        $this->config['table'] = 'tx_pxphpids_log';
         $this->handle = $this->_connect();
     }
 
