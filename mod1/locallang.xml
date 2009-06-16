@@ -7,9 +7,23 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">PHPIDS</label>
-			<label index="function1">Show all Impacts</label>
-			<label index="function2">Show all Impacts over 50</label>
-			<label index="function2">Show all recent Impacts</label>
+			<label index="function1">Show all impacts</label>
+			<label index="function2">Clear the log table</label>
+            <label index="function3">Clear the cache table</label>
+            <label index="function4">Show settings</label>
+			<label index="function1_text">This show all impacts with an impact level of %s or higher.</label>
+            <label index="function1_text_find_more">You can find all impacts in the logfile in %s.</label>
+            <label index="function1_text_check">In the pi1/class.tx_pxphpids_pi1.php set debug to true and check if you can get any impacts.</label>
+            <label index="function2_text">This will set all DB entries in the tx_pxphpids_log table to deleted=1 and no longer show them in "Show all impacts". Are you sure you want to do that?</label>
+            <label index="function2_text_del_ok">Successfully set all entrys in the tx_pxphpids_log table to deleted=1.</label>
+			<label index="function3_text">This will truncate the tx_pxphpids_cache table and delete all of its records. Are you sure you want to do that?</label>
+            <label index="function3_text_del_ok">Successfully truncated tx_pxphpids_cache.</label>
+            <label index="function4_text">This are the current PHPIDS settings. You can modify them with your Typo-Script Object Browser.</label>
+            <label index="open_link">Open this link in a new window</label>
+            <label index="attack_from">Click to see where this attack came from</label>
+            <label index="attack_to">Click to see which IP was attacked</label>
+            <label index="sql_no_data">No data found.</label>
+            <label index="sql_exec_error">Error executing the query!</label>
 		</languageKey>
 	</data>
 </T3locallang>
