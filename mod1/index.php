@@ -227,7 +227,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["ip"].'" target="_blank" title="'.$LANG->getLL('attack_from').'">'.$row["ip"].'</a></td>
 										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["origin"].'" target="_blank" title="'.$LANG->getLL('attack_to').'">'.$row["origin"].'</td>
 										<td align="right">&nbsp;'.$row["created"].'</td>
-                                        <td style="text-align:right; font-size:1.5em; background-color:'.$this->giveColor($row["impact"]).';">&nbsp;'.$row["impact"].'</td>
+                                        <td style="text-align:right; font-size:1.2em; background-color:'.$this->giveColor($row["impact"]).';">&nbsp;'.$row["impact"].'</td>
 									 </tr>
 							';
 						}

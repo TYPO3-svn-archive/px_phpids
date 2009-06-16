@@ -1,34 +1,34 @@
-page.8 < plugin.tx_pxphpids_pi1
-
 plugin.tx_pxphpids_pi1 {
 
-    filter_type     = {$plugin.tx_pxphpids_pi1.filter_type}
-    base_path       = {$plugin.tx_pxphpids_pi1.base_path}
-    use_base_path   = {$plugin.tx_pxphpids_pi1.use_base_path}
-    filter_path     = {$plugin.tx_pxphpids_pi1.filter_path}
-    tmp_path        = {$plugin.tx_pxphpids_pi1.tmp_path}
-    scan_keys       = {$plugin.tx_pxphpids_pi1.scan_keys}
-	HTML_Purifier_Path	= {$plugin.tx_pxphpids_pi1.HTML_Purifier_Path}
-	HTML_Purifier_Cache = {$plugin.tx_pxphpids_pi1.HTML_Purifier_Cache}
-    html            = {$plugin.tx_pxphpids_pi1.html}
-    json            = {$plugin.tx_pxphpids_pi1.json}
-    exceptions_0   = {$plugin.tx_pxphpids_pi1.exceptions_0}
-    exceptions_1   = {$plugin.tx_pxphpids_pi1.exceptions_1}
-    exceptions_2   = {$plugin.tx_pxphpids_pi1.exceptions_2}
-    min_php_version = {$plugin.tx_pxphpids_pi1.min_php_version}
-    file_logging_path = {$plugin.tx_pxphpids_pi1.file_logging_path}
-    envelope        = {$plugin.tx_pxphpids_pi1.envelope}
-    safemode        = {$plugin.tx_pxphpids_pi1.safemode}
-    urlencode       = {$plugin.tx_pxphpids_pi1.urlencode}
-    allowed_rate    = {$plugin.tx_pxphpids_pi1.allowed_rate}
-    caching         = {$plugin.tx_pxphpids_pi1.caching}
-    expiration_time = {$plugin.tx_pxphpids_pi1.expiration_time}
-    file_cache_path = {$plugin.tx_pxphpids_pi1.file_cache_path}
+    General.filter_type     = {$plugin.tx_pxphpids_pi1.General.filter_type}
+    General.use_base_path   = {$plugin.tx_pxphpids_pi1.General.use_base_path}
+    General.filter_path     = {$plugin.tx_pxphpids_pi1.General.filter_path}
+    General.tmp_path        = {$plugin.tx_pxphpids_pi1.General.tmp_path}
+    General.scan_keys       = {$plugin.tx_pxphpids_pi1.General.scan_keys}
+	General.HTML_Purifier_Path = {$plugin.tx_pxphpids_pi1.General.HTML_Purifier_Path}
+	General.HTML_Purifier_Cache = {$plugin.tx_pxphpids_pi1.General.HTML_Purifier_Cache}
+    General.html            = {$plugin.tx_pxphpids_pi1.General.html}
+    General.json            = {$plugin.tx_pxphpids_pi1.General.json}
+    General.exceptions_0    = {$plugin.tx_pxphpids_pi1.General.exceptions_0}
+    General.exceptions_1    = {$plugin.tx_pxphpids_pi1.General.exceptions_1}
+    General.exceptions_2    = {$plugin.tx_pxphpids_pi1.General.exceptions_2}
+    General.min_php_version = {$plugin.tx_pxphpids_pi1.General.min_php_version}
+    Logging.path            = {$plugin.tx_pxphpids_pi1.Logging.path}
+    Logging.envelope        = {$plugin.tx_pxphpids_pi1.Logging.envelope}
+    Logging.safemode        = {$plugin.tx_pxphpids_pi1.Logging.safemode}
+    Logging.urlencode       = {$plugin.tx_pxphpids_pi1.Logging.urlencode}
+    Logging.allowed_rate    = {$plugin.tx_pxphpids_pi1.Logging.allowed_rate}
+    Caching.caching         = {$plugin.tx_pxphpids_pi1.Caching.caching}
+    Caching.expiration_time = {$plugin.tx_pxphpids_pi1.Caching.expiration_time}
+    Caching.path = {$plugin.tx_pxphpids_pi1.Caching.path}
 
 	_CSS_DEFAULT_STYLE (
+        .tx-pxphpids-pi1 { text-align:left; width:100%; }
         h6 { margin:0; padding:0; }
         .ok_box { border:1px solid red; background-color:#fee; padding:5px; }
         .red_box { border:1px solid #90DE00; background-color:#F3FFDF; padding:5px; }
         .error_box { border:1px solid red; background-color:#fee; padding:5px; font-weight:bold; }
     )
 }
+
+page.8 < plugin.tx_pxphpids_pi1

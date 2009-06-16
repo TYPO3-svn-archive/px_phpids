@@ -36,7 +36,8 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 	var $prefixId      = 'tx_pxphpids_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_pxphpids_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'px_phpids';	// The extension key.
-	
+    var $conf;
+
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -82,7 +83,7 @@ class tx_pxphpids_pi1 extends tslib_pibase {
                 'COOKIE' => $_COOKIE
             );
 
-            $init = IDS_Init::init($this->path.'IDS/Config/Config.ini');
+            $init = IDS_Init::init();
 
              /**
              * You can reset the whole configuration
@@ -97,24 +98,16 @@ class tx_pxphpids_pi1 extends tslib_pibase {
              * or you can access the config directly like here:
              */
 
+            $init->config['General'] = $this->conf['General.'];
             $init->config['General']['base_path'] = $this->path.'IDS/';
-            $init->config['General']['use_base_path'] = true;
 
-            $init->config['Caching']['caching'] = $this->conf['caching'];
-
-            $init->config['Logging']['recipients'] = Array();
-            if ($this->conf['recipients']) $init->config['Logging']['recipients'][] = $this->conf['recipients'];
-            if ($this->conf['subject']) $init->config['Logging']['subject'] = $this->conf['subject'];
-            if ($this->conf['recipients']) $init->config['Logging']['header'] = $this->conf['header'];
-            if ($this->conf['path'])  $init->config['Logging']['path'] = $this->conf['path'];
-
+            $init->config['Logging'] = $this->conf['Logging.'];
             $init->config['Logging']['user'] = TYPO3_db_username;
             $init->config['Logging']['password'] = TYPO3_db_password;
             $init->config['Logging']['table'] = 'tx_pxphpids_log';
             $init->config['Logging']['wrapper'] = 'mysql:'.TYPO3_db_host.';port=3306;dbname='. TYPO3_db;
 
-            if($this->conf['caching']) $init->config['Caching']['caching'] = $this->conf['caching'];
-            if($this->conf['expiration_time'])  $init->config['Caching']['expiration_time'] = $this->conf['expiration_time'];
+            $init->config['Caching'] = $this->conf['Caching.'];
             $init->config['Caching']['user'] = TYPO3_db_username;
             $init->config['Caching']['password'] = TYPO3_db_password;
             $init->config['Caching']['table'] = 'tx_pxphpids_cache';
@@ -190,11 +183,13 @@ class tx_pxphpids_pi1 extends tslib_pibase {
             * sth went terribly wrong - maybe the
             * filter rules weren't found?
             */
-            $content.='<p class="error_box">An error occured: '.$e->getMessage().'</p>';
+            $content.='<p class="error_box">An error occurred: '.$e->getMessage().'</p>';
+            $content.='<p class="error_box">Settings in $this->conf<pre>'.print_r($this->conf,true).'</pre></p>';
+            #$content.='<p class="error_box">Settings in $init->config<pre>'.print_r($init->config,true).'</pre></p>'; //  DB Connection settings are shown here!
         }
 
         if($this->debug==true){
-            return $content;
+            return $this->pi_wrapInBaseClass($content);
         }
 	}
 }

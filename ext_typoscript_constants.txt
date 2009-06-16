@@ -1,69 +1,66 @@
 plugin.tx_pxphpids_pi1 {
 
     # cat=px_phpids; type=text; label=Filter Typ: XML
-    filter_type     = xml
+    General.filter_type     = xml
 
-    # cat=px_phpids; type=text; label=Base path: /full/path/to/IDS/
-    base_path       = /full/path/to/IDS/
-
-    # cat=px_phpids; type=boolean; label=Use base path: false
-    use_base_path   = false
+    # cat=px_phpids; type=boolean; label=Use base path: true
+    General.use_base_path   = true
 
     # cat=px_phpids; type=text; label=Filter path: default_filter.xml
-    filter_path     = default_filter.xml
+    General.filter_path     = default_filter.xml
 
     # cat=px_phpids; type=text; label=Tmp path: tmp
-    tmp_path        = tmp
+    General.tmp_path        = tmp
 
     # cat=px_phpids; type=boolean; label=Scan Key: false
-    scan_keys       = false
+    General.scan_keys       = false
 
     # cat=px_phpids; type=text; label=HTML Purifier Path: In case you want to use a different HTMLPurifier source, specify it here. By default, those files are used that are being shipped with PHPIDS
-	HTML_Purifier_Path	= IDS/vendors/htmlpurifier/HTMLPurifier.auto.php
+	General.HTML_Purifier_Path	= IDS/vendors/htmlpurifier/HTMLPurifier.auto.php
 
     # cat=px_phpids; type=text; label=HTML Purifier Cache: In case you want to use a different HTMLPurifier cache, specify it here. By default, those files are used that are being shipped with PHPIDS
-	HTML_Purifier_Cache = IDS/vendors/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer
+	General.HTML_Purifier_Cache = IDS/vendors/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer
 
     # cat=px_phpids; type=text; label=HTML: Define which fields contain html and need preparation before hitting the PHPIDS rules
-    html          = __wysiwyg
+    General.html          = __wysiwyg
 
     # cat=px_phpids; type=text; label=JSON: Define which fields contain JSON data and should be treated as such for fewer false positives
-    json          = __jsondata
+    General.json          = __jsondata
 
     # cat=px_phpids; type=text; label=Exceptions 1: Define which fields shouldn't be monitored (a[b]=c should be referenced via a.b) [TODO: IS ARRAY!]
-    exceptions_1    = __utmz
+    General.exceptions_0    = __utmz
 
     # cat=px_phpids; type=text; label=Exceptions 2: Define which fields shouldn't be monitored (a[b]=c should be referenced via a.b) [TODO: IS ARRAY!]
-    exceptions_2    = __utmc
+    General.exceptions_1    = __utmc
 
     # cat=px_phpids; type=text; label=Exceptions 3: Define which fields shouldn't be monitored (a[b]=c should be referenced via a.b) [TODO: IS ARRAY!]
-    exceptions_3    =
+    General.exceptions_2    =
 
     # cat=px_phpids; type=text; label=Min PHP Version: PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
-    min_php_version = 5.1.6
+    General.min_php_version = 5.1.6
 
     # cat=px_phpids; type=text; label=File logging: If you use the PHPIDS logger you can define specific configuration here
-    file_logging_path = tmp/phpids_log.txt
+    Logging.path = tmp/phpids_log.txt
 
     # cat=px_phpids; type=text; label=Email logging: Note that enabling safemode you can prevent spam attempts
-    envelope        = ""
+    Logging.envelope        = ""
 
     # cat=px_phpids; type=boolean; label=Email logging: true
-    safemode        = true
+    Logging.safemode        = true
 
     # cat=px_phpids; type=boolean; label=Email logging: true
-    urlencode       = true
+    Logging.urlencode       = true
 
     # cat=px_phpids; type=text; label=Email logging: 15
-    allowed_rate    = 15
+    Logging.allowed_rate    = 15
 
     # cat=px_phpids; type=text; label=Caching: session|file|database|memcached|none
-    caching         = file
+    Caching.caching         = database
 
     # cat=px_phpids; type=text; label=Caching: 1-10000
-    expiration_time = 600
+    Caching.expiration_time = 600
 
     # cat=px_phpids; type=text; label=File cache: tmp/default_filter.cache
-    file_cache_path = tmp/default_filter.cache
+    Caching.path = tmp/default_filter.cache
 
 }
