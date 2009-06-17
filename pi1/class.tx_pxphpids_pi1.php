@@ -52,8 +52,8 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 		/*
          * Settings
          */
-        $this->path = t3lib_extMgm::extPath('px_phpids');   // Define Path to PHP IDS
-        $this->debug = false;  // Debug Mode true or false
+        $this->path = t3lib_extMgm::extPath('px_phpids');       // Define Path to PHP IDS
+        $this->debug = $this->conf['General.']['debug_mode']=='1' ? true : false;   // Debug Mode true or false
 
         // set the include path properly for PHPIDS
         set_include_path(
@@ -106,6 +106,7 @@ class tx_pxphpids_pi1 extends tslib_pibase {
             $init->config['Logging']['password'] = TYPO3_db_password;
             $init->config['Logging']['table'] = 'tx_pxphpids_log';
             $init->config['Logging']['wrapper'] = 'mysql:'.TYPO3_db_host.';port=3306;dbname='. TYPO3_db;
+            $init->config['Logging']['recipients'] = $this->conf['Logging.']['email'] ? $this->conf['Logging.']['email'] : $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 
             $init->config['Caching'] = $this->conf['Caching.'];
             $init->config['Caching']['user'] = TYPO3_db_username;
@@ -149,24 +150,26 @@ class tx_pxphpids_pi1 extends tslib_pibase {
                  *  100+: This is a serious hacking attemp -> knock em out!
                  */
 
-                // Works by default
-                if($result->getImpact()>0){
+                if($result->getImpact()>=$this->conf['Impact.']['file_threshold']){
                     $compositeLog->addLogger(IDS_Log_File::getInstance($init));     // Log Impact into File (IDS/tmp/phpids_log.txt)
+                    $content .='<p>Reporting to File (Threshold: '.$this->conf['Impact.']['file_threshold'].')</p>';
                 }
 
-                if($result->getImpact()>20){
-                    // Configure DB-Connection in IDS/Config/Config.ini
+                if($result->getImpact()>=$this->conf['Impact.']['db_threshold']){
                     $compositeLog->addLogger(IDS_Log_Database::getInstance($init)); // Log Impact into a Database (tx_pxphpids_log)
+                    $content .='<p>Reporting to DB (Threshold: '.$this->conf['Impact.']['db_threshold'].')</p>';
                 }
 
-                if($result->getImpact()>50){
-                    // Configure E-Mail in IDS/Config/Config.ini
+                if($result->getImpact()>=$this->conf['Impact.']['email_threshold']){
                     $compositeLog->addLogger(IDS_Log_Email::getInstance($init));    // Report Impact via E-Mail
+                    $content .='<p>Reporting to E-Mail (Threshold: '.$this->conf['Impact.']['email_threshold'].')</p>';
                 }
 
-                if($result->getImpact()>100){
+                if($result->getImpact()>=$this->conf['Impact.']['die_threshold']){
                     if($this->debug==false){
                         $content = '';  // Delete all informations possibly given by PHP IDS
+                    }else{
+                        $content .='<p>Dieing... (Threshold: '.$this->conf['Impact.']['die_threshold'].')</p>';
                     }
                     $content .= '<p>You have been logged out cause of a possible hacking attemp.</p><p>Your data has been stored and reported.</p><p>If you think this is an error please contact the webmaster of this website.</p>';
                     session_destroy();

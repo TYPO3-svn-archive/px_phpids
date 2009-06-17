@@ -1,5 +1,10 @@
 plugin.tx_pxphpids_pi1 {
 
+    Impact.file_threshold   = {$plugin.tx_pxphpids_pi1.Impact.file_threshold}
+    Impact.db_threshold     = {$plugin.tx_pxphpids_pi1.Impact.db_threshold}
+    Impact.email_threshold  = {$plugin.tx_pxphpids_pi1.Impact.email_threshold}
+    Impact.die_threshold    = {$plugin.tx_pxphpids_pi1.Impact.die_threshold}
+    General.debug_mode      = {$plugin.tx_pxphpids_pi1.General.debug_mode}
     General.filter_type     = {$plugin.tx_pxphpids_pi1.General.filter_type}
     General.use_base_path   = {$plugin.tx_pxphpids_pi1.General.use_base_path}
     General.filter_path     = {$plugin.tx_pxphpids_pi1.General.filter_path}
@@ -13,6 +18,7 @@ plugin.tx_pxphpids_pi1 {
     General.exceptions_1    = {$plugin.tx_pxphpids_pi1.General.exceptions_1}
     General.exceptions_2    = {$plugin.tx_pxphpids_pi1.General.exceptions_2}
     General.min_php_version = {$plugin.tx_pxphpids_pi1.General.min_php_version}
+    Logging.email           = {$plugin.tx_pxphpids_pi1.Logging.email}
     Logging.path            = {$plugin.tx_pxphpids_pi1.Logging.path}
     Logging.envelope        = {$plugin.tx_pxphpids_pi1.Logging.envelope}
     Logging.safemode        = {$plugin.tx_pxphpids_pi1.Logging.safemode}
@@ -20,7 +26,7 @@ plugin.tx_pxphpids_pi1 {
     Logging.allowed_rate    = {$plugin.tx_pxphpids_pi1.Logging.allowed_rate}
     Caching.caching         = {$plugin.tx_pxphpids_pi1.Caching.caching}
     Caching.expiration_time = {$plugin.tx_pxphpids_pi1.Caching.expiration_time}
-    Caching.path = {$plugin.tx_pxphpids_pi1.Caching.path}
+    Caching.path            = {$plugin.tx_pxphpids_pi1.Caching.path}
 
 	_CSS_DEFAULT_STYLE (
         .tx-pxphpids-pi1 { text-align:left; width:100%; }

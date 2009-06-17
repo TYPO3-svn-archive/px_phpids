@@ -205,6 +205,8 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 							}
 						}
 
+                        $content .= '<p>'.$LANG->getLL('function1_text').'</p>';
+
 						$content .= '
 									<table cellpadding="0" cellspacing="0" border="1" width="100%" class="maintable">
 									 <tr>
@@ -227,18 +229,20 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["ip"].'" target="_blank" title="'.$LANG->getLL('attack_from').'">'.$row["ip"].'</a></td>
 										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["origin"].'" target="_blank" title="'.$LANG->getLL('attack_to').'">'.$row["origin"].'</td>
 										<td align="right">&nbsp;'.$row["created"].'</td>
-                                        <td style="text-align:right; font-size:1.2em; background-color:'.$this->giveColor($row["impact"]).';">&nbsp;'.$row["impact"].'</td>
+                                        <td style="text-align:right; '.$this->impactStyle($row["impact"]).'">&nbsp;'.$row["impact"].'</td>
 									 </tr>
 							';
 						}
 
 						$content .= '
-										 </table>
+										 </table><br />
 						';
 					} else {
 						$content .= '<p>'.$LANG->getLL('sql_no_data').'</p>';
                         $content .= '<p>'.$LANG->getLL('function1_text_check').'</p>';
 					}
+
+                $content .= '<p>'.$LANG->getLL('function1_text_find_more').'</p>';
 
                 $this->content.=$this->doc->section($LANG->getLL('function1'),$content,0,1);
 				break;
@@ -283,12 +287,12 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 		}
 	}
 
-    function giveColor($impact){
-        if($impact>=100) return '#ff0000; font-weight:bold';
-        if($impact>=50)  return '#BD143C; font-weight:bold';
-        if($impact>=25)  return '#ED254D';
-        if($impact>=10)  return '#FCE6E6';
-        return 'transparent';
+    function impactStyle($impact){
+        if($impact>75)  return 'font-size:1.5em; background-color: #ff0000; font-weight:bold;';
+        if($impact>50)  return 'font-size:1.3em; background-color: #BD143C; font-weight:bold;';
+        if($impact>25)  return 'font-size:1.1em; background-color: #ED254D';
+        if($impact>10)  return 'font-size:1.0em; background-color: #FCE6E6';
+        return '';
     }
 }
 

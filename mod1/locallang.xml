@@ -11,8 +11,8 @@
 			<label index="function2">Clear the log table</label>
             <label index="function3">Clear the cache table</label>
             <label index="function4">Show settings</label>
-			<label index="function1_text">This show all impacts with an impact level of %s or higher.</label>
-            <label index="function1_text_find_more">You can find all impacts in the logfile in %s.</label>
+			<label index="function1_text">This shows all impacts with an impact level higher then the value you specified in the TypoScribt object Impact.db_threshold.</label>
+            <label index="function1_text_find_more">You can find all impacts in the logfile you specified in TypoScribt object Logging.path.</label>
             <label index="function1_text_check">In the pi1/class.tx_pxphpids_pi1.php set debug to true and check if you can get any impacts.</label>
             <label index="function2_text">This will set all DB entries in the tx_pxphpids_log table to deleted=1 and no longer show them in "Show all impacts". Are you sure you want to do that?</label>
             <label index="function2_text_del_ok">Successfully set all entrys in the tx_pxphpids_log table to deleted=1.</label>

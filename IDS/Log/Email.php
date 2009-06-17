@@ -9,16 +9,16 @@
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, version 3 of the License, or 
+ * the Free Software Foundation, version 3 of the License, or
  * (at your option) any later version.
  *
  * PHPIDS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
- * along with PHPIDS. If not, see <http://www.gnu.org/licenses/>. 
+ * along with PHPIDS. If not, see <http://www.gnu.org/licenses/>.
  *
  * PHP version 5.1.6+
  *
@@ -86,8 +86,8 @@ class IDS_Log_Email implements IDS_Log_Interface
     /**
      * Urlencode for result strings
      *
-     * This switch is true by default. Setting it to false removes 
-     * the 'better safe than sorry' urlencoding for the result string in 
+     * This switch is true by default. Setting it to false removes
+     * the 'better safe than sorry' urlencoding for the result string in
      * the report mails. Enhances readability but maybe XSSes email clients.
      *
      * @var boolean
@@ -148,7 +148,7 @@ class IDS_Log_Email implements IDS_Log_Interface
 
         if ($config instanceof IDS_Init) {
             $this->recipients   = $config->config['Logging']['recipients'];
-            $this->subject      = $config->config['Logging']['subject'];
+            $this->subject      = $config->config['Logging']['subject'] ? $config->config['Logging']['subject'] : "PHPIDS detected an intrusion attempt on ".$_SERVER['SERVER_NAME']." (".$_SERVER['SERVER_ADDR'].")!";
             $this->headers      = $config->config['Logging']['header'];
             $this->envelope     = $config->config['Logging']['envelope'];
             $this->safemode     = $config->config['Logging']['safemode'];
@@ -279,8 +279,8 @@ class IDS_Log_Email implements IDS_Log_Interface
         $attackedParameters = '';
         foreach ($data as $event) {
             $attackedParameters .= $event->getName() . '=' .
-                ((!isset($this->urlencode) ||$this->urlencode) 
-                	? urlencode($event->getValue()) 
+                ((!isset($this->urlencode) ||$this->urlencode)
+                	? urlencode($event->getValue())
                 	: $event->getValue()) . ", ";
         }
 
@@ -335,7 +335,7 @@ class IDS_Log_Email implements IDS_Log_Interface
                 $headers = $this->headers;
             }
 
-            if (!empty($this->recipients)) {
+            if ($this->recipients && !empty($this->recipients)) {
                 if (is_array($this->recipients)) {
                     foreach ($this->recipients as $address) {
                         $this->send(
@@ -353,6 +353,10 @@ class IDS_Log_Email implements IDS_Log_Interface
                         $this->envelope
                     );
                 }
+            }else{
+                throw new Exception(
+                    'Please make sure that you specified an E-Mail address in Logging.email or $TYPO3_CONF_VARS[\'BE\'][\'warning_email_addr\']'
+                );
             }
 
         } else {
