@@ -225,7 +225,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 									 <tr>
 										<td>'.htmlspecialchars($row["name"]).'&nbsp;</td>
 										<td>'.htmlspecialchars($row["value"]).'&nbsp;</td>
-										<td><a href="http://'.$_SERVER['SERVER_NAME'].$row["page"].'" target="_blank" title="'.$LANG->getLL('open_link').'">'.htmlspecialchars($row["page"]).'</a>&nbsp;</td>
+										<td>'.htmlspecialchars($row["page"]).'&nbsp;</td>
 										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["ip"].'" target="_blank" title="'.$LANG->getLL('attack_from').'">'.$row["ip"].'</a></td>
 										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["origin"].'" target="_blank" title="'.$LANG->getLL('attack_to').'">'.$row["origin"].'</td>
 										<td align="right">&nbsp;'.$row["created"].'</td>
