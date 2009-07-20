@@ -73,8 +73,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 						'function' => Array (
 							'1' => $LANG->getLL('function1'),
 							'2' => $LANG->getLL('function2'),
-							'3' => $LANG->getLL('function3'),
-                            #'4' => $LANG->getLL('function4'),
+							'3' => $LANG->getLL('function3')
 						)
 					);
 					parent::menuConfig();
@@ -117,7 +116,8 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 							</script>
 						';
 
-						$headerSection = '<img alt="'.$LANG->getLL('title').'" title="'.$LANG->getLL('title').'" src="moduleicon.gif"/> <i>PHP Intrusion Detection System</i>';
+						$headerSection = '<img alt="'.$LANG->getLL('title').'" title="pixabit" src="moduleicon.gif"/> <i>PHP Intrusion Detection System</i>. ';
+                        $headerSection.= 'Need help with this extension? Contact us at <a href="http://www.pixabit.de" target="_blank">www.pixabit.de</a>';
 
 						$this->content.=$this->doc->startPage($LANG->getLL('title'));
 						$this->content.=$this->doc->header($LANG->getLL('title'));
@@ -167,14 +167,15 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 		global $LANG,$TYPO3_CONF_VARS;
 
         $content .= '
-             <style>
+             <style type="text/css">
                 #ext-px-phpids-mod1-index-php .typo3-mediumDoc { width: 100%; }
                 #ext-px-phpids-mod1-index-php .typo3-mediumDoc form { padding:10px; }
                 #ext-px-phpids-mod1-index-php p { margin-bottom:1.5em; font-style:italic; }
                 TABLE.maintable TH { padding: 0px 2px 0px 2px; }
                 TABLE.maintable TH A { color: #000000; text-decoration: none; }
-                TABLE.maintable TH A:HOVER { color: #555555; }
-                TABLE.maintable TD { padding: 0px 2px 0px 2px; }
+                TABLE.maintable TH A:HOVER { color: #555555; text-decoration: underline; }
+                TABLE.maintable TD { width:350px; height:60px; }
+                TABLE.maintable TD DIV { width: inherit; height: inherit; padding: 0px 2px 0px 2px; overflow:auto; }
                 TABLE.maintable TD A { color: #555555; text-decoration: underline; }
                 TABLE.maintable TD A:HOVER { color: #000000; }
              </style>
@@ -192,8 +193,9 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 						$req_dir = 'DESC';
 						$order = "created DESC";
 					}
+                    $start = is_numeric($_REQUEST['start']) ? $_REQUEST['start'] : 0;
 
-                    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_pxphpids_log', 'DELETED=0', '', $order, '');
+                    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_pxphpids_log', 'DELETED=0', '', $order, $start.',50');
                     if ($GLOBALS["TYPO3_DB"]->sql_num_rows($res)>0) {
 						if ($req_ord != false) {
 							if ($req_dir == 'DESC') {
@@ -208,8 +210,8 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
                         $content .= '<p>'.$LANG->getLL('function1_text').'</p>';
 
 						$content .= '
-									<table cellpadding="0" cellspacing="0" border="1" width="100%" class="maintable">
-									 <tr>
+									<table border="1" class="maintable">
+									<tr>
 										<th><a href="index.php?order=name'.($req_ord=='name' ? $direction : urlencode(' ASC')).'">Name '.($req_ord=='name' ? $arrow : '').'</a></th>
 										<th><a href="index.php?order=value'.($req_ord=='value' ? $direction : urlencode(' ASC')).'">Value '.($req_ord=='value' ? $arrow : '').'</a></th>
 										<th><a href="index.php?order=page'.($req_ord=='page' ? $direction : urlencode(' ASC')).'">Page '.($req_ord=='page' ? $arrow : '').'</a></th>
@@ -217,26 +219,25 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 										<th><a href="index.php?order=origin'.($req_ord=='paymenttitle' ? $direction : urlencode(' ASC')).'">Origin '.($req_ord=='origin' ? $arrow : '').'</a></th>
 										<th><a href="index.php?order=created'.($req_ord=='created' ? $direction : urlencode(' ASC')).'">Created '.($req_ord=='created' ? $arrow : '').'</a></th>
                                         <th><a href="index.php?order=impact'.($req_ord=='impact' ? $direction : urlencode(' DESC')).'">Impact '.($req_ord=='impact' ? $arrow : '').'</a></th>
-									 </tr>
+									</tr>
 						';
 
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$content .= '
 									 <tr>
-										<td>'.htmlspecialchars($row["name"]).'&nbsp;</td>
-										<td>'.htmlspecialchars($row["value"]).'&nbsp;</td>
-										<td>'.htmlspecialchars($row["page"]).'&nbsp;</td>
-										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["ip"].'" target="_blank" title="'.$LANG->getLL('attack_from').'">'.$row["ip"].'</a></td>
-										<td align="right">&nbsp;<a href="http://www.ip2location.com/'.$row["origin"].'" target="_blank" title="'.$LANG->getLL('attack_to').'">'.$row["origin"].'</td>
-										<td align="right">&nbsp;'.$row["created"].'</td>
-                                        <td style="text-align:right; '.$this->impactStyle($row["impact"]).'">&nbsp;'.$row["impact"].'</td>
+										<td style="width:150px"><div>'.htmlspecialchars($row["name"]).'&nbsp;</div></td>
+										<td style="width:300px"><div>'.htmlspecialchars($row["value"]).'&nbsp;</div></td>
+										<td style="width:400px"><div>'.htmlspecialchars($row["page"]).'&nbsp;</div></td>
+										<td style="width:100px; text-align:right">&nbsp;<a href="http://www.ip2location.com/'.$row["ip"].'" target="_blank" title="'.$LANG->getLL('attack_from').'">'.$row["ip"].'</a></td>
+										<td style="width:100px; text-align:right">&nbsp;<a href="http://www.ip2location.com/'.$row["origin"].'" target="_blank" title="'.$LANG->getLL('attack_to').'">'.$row["origin"].'</td>
+										<td style="width:125px; text-align:right">&nbsp;'.$row["created"].'</td>
+                                        <td style="width:75px; text-align:right; '.$this->impactStyle($row["impact"]).'">&nbsp;'.$row["impact"].'</td>
 									 </tr>
 							';
 						}
 
-						$content .= '
-										 </table><br />
-						';
+						$content .= '</table><br />';
+                        $content .= '<div style="width:100%; text-align:center;">'.$this->impactBrowser().'</div><hr />';
 					} else {
 						$content .= '<p>'.$LANG->getLL('sql_no_data').'</p>';
                         $content .= '<p>'.$LANG->getLL('function1_text_check').'</p>';
@@ -247,7 +248,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
                 $this->content.=$this->doc->section($LANG->getLL('function1'),$content,0,1);
 				break;
 
-			case 2: // Function to set all recors in tx_pxphpids_log to deleted=1
+			case 2: // Function to set all records in tx_pxphpids_log to deleted=1
                 if((string)$_REQUEST['del']=='true'){
                     $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_pxphpids_log', '1', array('deleted'=>1));
                     if($res){
@@ -259,7 +260,6 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
                     $content.='<p>'.$LANG->getLL('function2_text').'</p>';
                     $content.='[ <a href="index.php?del=true">Yes</a> ]';
                 }
-
 				$this->content.=$this->doc->section($LANG->getLL('function2'),$content,0,1);
 				break;
 
@@ -276,14 +276,8 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
                     $content.='<p>'.$LANG->getLL('function3_text').'</p>';
                     $content.='[ <a href="index.php?del=true">Yes</a> ]';
                 }
-
 				$this->content.=$this->doc->section($LANG->getLL('function3'),$content,0,1);
 				break;
-
-            case 4: // Function to show the settings
-                $content.='<p>'.$LANG->getLL('function4_text').'</p>';
-                $this->content.=$this->doc->section($LANG->getLL('function4'),$content,0,1);
-                break;
 		}
 	}
 
@@ -293,6 +287,49 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
         if($impact>25)  return 'font-size:1.1em; background-color: #ED254D';
         if($impact>10)  return 'font-size:1.0em; background-color: #FCE6E6';
         return '';
+    }
+
+    function impactBrowser() {
+        $content ='';
+        $offset=50;
+        $start = is_numeric($_REQUEST['start']) ? $_REQUEST['start'] : 0;
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_pxphpids_log', 'DELETED=0');
+        $rows=$GLOBALS["TYPO3_DB"]->sql_num_rows($res);
+
+        if($start > 0) {
+            $content .= " <a href=\"index.php?start=0&amp;order=".$_REQUEST['order']."\">&laquo;</a> ";
+            $back=$start-$offset;
+            if($back < 0) {
+                $back = 0;
+            }
+            $content .= " <a href=\"index.php?start=".$back."&amp;order=".$_REQUEST['order']."\">&lt;</a> ";
+        }
+
+        if($rows>$offset) {
+            $seiten=intval($rows/$offset);
+            if($rows%$offset) {
+                $seiten++;
+            }
+        }
+
+        for ($i=1;$i<=$seiten;$i++) {
+            $fwd=($i-1)*$offset;
+            $x=$fwd+$offset;
+            $content .= " <a href=\"index.php?start=".$fwd."&amp;order=".$_REQUEST['order']."\">";
+            if($start==$fwd) $content .= "<b>";
+            $content .= "[".($fwd+1)."-".$x."]";
+            if($start==$fwd) $content .= "</b>";
+            $content .= "</a> ";
+        }
+
+        if($start < $rows-$offset && $rows>$offset) {
+            $fwd=$start+$offset;
+            $content .= " <a href=\"index.php?start=".$fwd."&amp;order=".$_REQUEST['order']."\">&gt;</a> ";
+            $fwd=$rows-$offset;
+            $content .= " <a href=\"index.php?start=".$fwd."&amp;order=".$_REQUEST['order']."\">&raquo;</a> ";
+        }
+
+        return $content;
     }
 }
 
