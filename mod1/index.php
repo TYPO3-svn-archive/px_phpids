@@ -52,14 +52,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 				 */
 				function init()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
 					parent::init();
-
-					/*
-					if (t3lib_div::_GP('clear_all_cache'))	{
-						$this->include_once[] = PATH_t3lib.'class.t3lib_tcemain.php';
-					}
-					*/
 				}
 
 				/**
@@ -83,13 +76,12 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 				 * Main function of the module. Write the content to $this->content
 				 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
 				 *
-				 * @return	[type]		...
+				 * @return	[type]
 				 */
 				function main()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-					// Access check!
-					// The page will show only if there is a valid page and if this page may be viewed by the user
+					// Access check! The page will show only if there is a valid page and if this page may be viewed by the user
 					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 					$access = is_array($this->pageinfo) ? 1 : 0;
 
@@ -125,7 +117,6 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 						$this->content.=$this->doc->section('',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
 						$this->content.=$this->doc->divider(5);
 
-
 						// Render content:
 						$this->moduleContent();
 
@@ -136,7 +127,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 
 						$this->content.=$this->doc->spacer(10);
 					} else {
-							// If no access or if ID == zero
+						// If no access or if ID == zero
 
 						$this->doc = t3lib_div::makeInstance('mediumDoc');
 						$this->doc->backPath = $BACK_PATH;
@@ -148,23 +139,23 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 					}
 				}
 
-				/**
-				 * Prints out the module HTML
-				 *
-				 * @return	void
-				 */
-				function printContent()	{
-					$this->content.=$this->doc->endPage();
-					echo $this->content;
-				}
+	/**
+	 * Prints out the module HTML
+	 *
+	 * @return	void
+	 */
+	function printContent()	{
+		$this->content.=$this->doc->endPage();
+		echo $this->content;
+	}
 
-				/**
-				 * Generates the module content
-				 *
-				 * @return	void
-				 */
+	/**
+	 * Generates the module content
+	 *
+	 * @return	void
+	 */
     function moduleContent()	{
-	global $LANG,$TYPO3_CONF_VARS;
+		global $LANG,$TYPO3_CONF_VARS;
 
         $content .= '
              <style type="text/css">
@@ -195,10 +186,10 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 						if ($req_ord != false) {
 							if ($req_dir == 'DESC') {
 								$direction = urlencode(' ASC');
-								$arrow = '<img src="/typo3/sysext/t3skin/icons/gfx/redup.gif" width="7" height="4" alt="UP" />';
+								$arrow = '<img src="../../../../typo3/sysext/t3skin/icons/gfx/redup.gif" width="7" height="4" alt="UP" />';
 							} else {
 								$direction = urlencode(' DESC');
-								$arrow = '<img src="/typo3/sysext/t3skin/icons/gfx/reddown.gif" width="7" height="4" alt="DOWN" />';
+								$arrow = '<img src="../../../../typo3/sysext/t3skin/icons/gfx/reddown.gif" width="7" height="4" alt="DOWN" />';
 							}
 						}
 
@@ -207,14 +198,14 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 						$content .= '
 								<table class="typo3-dblist" cellspacing="0" cellpadding="0" border="0">
 									<tbody>
-										<tr class="c-headLineTable">
-											<td style="width:150px"><a href="index.php?order=name'.($req_ord=='name' ? $direction : urlencode(' ASC')).'">Name '.($req_ord=='name' ? $arrow : '').'</a></td>
-											<td style="width:375px"><a href="index.php?order=value'.($req_ord=='value' ? $direction : urlencode(' ASC')).'">Value '.($req_ord=='value' ? $arrow : '').'</a></td>
-											<td style="width:375px"><a href="index.php?order=page'.($req_ord=='page' ? $direction : urlencode(' ASC')).'">Page '.($req_ord=='page' ? $arrow : '').'</a></td>
-											<td style="width:100px"><a href="index.php?order=ip'.($req_ord=='ip' ? $direction : urlencode(' ASC')).'">IP '.($req_ord=='ip' ? $arrow : '').'</a></td>
-											<td style="width:100px"><a href="index.php?order=origin'.($req_ord=='paymenttitle' ? $direction : urlencode(' ASC')).'">Origin '.($req_ord=='origin' ? $arrow : '').'</a></td>
-											<td style="width:100px"><a href="index.php?order=created'.($req_ord=='created' ? $direction : urlencode(' ASC')).'">Created '.($req_ord=='created' ? $arrow : '').'</a></td>
-	                                        <td style="width:75px; text-align:right;"><a href="index.php?order=impact'.($req_ord=='impact' ? $direction : urlencode(' DESC')).'">Impact '.($req_ord=='impact' ? $arrow : '').'</a></td>
+										<tr class="c-headLine">
+											<td class="col-title" style="width:150px"><a href="index.php?order=name'.($req_ord=='name' ? $direction : urlencode(' ASC')).'">Name '.($req_ord=='name' ? $arrow : '').'</a></td>
+											<td class="col-title" style="width:375px"><a href="index.php?order=value'.($req_ord=='value' ? $direction : urlencode(' ASC')).'">Value '.($req_ord=='value' ? $arrow : '').'</a></td>
+											<td class="col-title" style="width:375px"><a href="index.php?order=page'.($req_ord=='page' ? $direction : urlencode(' ASC')).'">Page '.($req_ord=='page' ? $arrow : '').'</a></td>
+											<td class="col-title" style="width:100px"><a href="index.php?order=ip'.($req_ord=='ip' ? $direction : urlencode(' ASC')).'">IP '.($req_ord=='ip' ? $arrow : '').'</a></td>
+											<td class="col-title" style="width:100px"><a href="index.php?order=origin'.($req_ord=='paymenttitle' ? $direction : urlencode(' ASC')).'">Origin '.($req_ord=='origin' ? $arrow : '').'</a></td>
+											<td class="col-title" style="width:100px"><a href="index.php?order=created'.($req_ord=='created' ? $direction : urlencode(' ASC')).'">Created '.($req_ord=='created' ? $arrow : '').'</a></td>
+	                                        <td class="col-title" style="width:75px; text-align:center;"><a href="index.php?order=impact'.($req_ord=='impact' ? $direction : urlencode(' DESC')).'">Impact '.($req_ord=='impact' ? $arrow : '').'</a></td>
 										</tr>
 						';
 
@@ -228,7 +219,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 										<td><a href="http://www.ip2location.com/'.$row["ip"].'" target="_blank" title="'.$LANG->getLL('attack_from').'">'.$row["ip"].'</a>&nbsp;</td>
 										<td><a href="http://www.ip2location.com/'.$row["origin"].'" target="_blank" title="'.$LANG->getLL('attack_to').'">'.$row["origin"].'</a>&nbsp;</td>
 										<td>'.$row["created"].'&nbsp;</td>
-                                        <td style="text-align:right; '.$this->impactStyle($row["impact"]).'">&nbsp;'.$row["impact"].'</td>
+                                        <td style="text-align:center; '.$this->impactStyle($row["impact"]).'">&nbsp;'.$row["impact"].'</td>
 									 </tr>
 							';
 						}
