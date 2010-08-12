@@ -45,7 +45,7 @@ require_once 'IDS/Log/Interface.php';
  * @author    Christian Matthies <ch0012@gmail.com>
  * @author    Mario Heiderich <mario.heiderich@gmail.com>
  * @author    Lars Strojny <lars@strojny.net>
- * @copyright 2007 The PHPIDS Group
+ * @copyright 2007-2009 The PHPIDS Group
  * @license   http://www.gnu.org/licenses/lgpl.html LGPL
  * @version   Release: $Id:Database.php 517 2007-09-15 15:04:13Z mario $
  * @link      http://php-ids.org/
@@ -59,20 +59,6 @@ class IDS_Log_Database implements IDS_Log_Interface
      * @var string
      */
     private $wrapper = null;
-
-    /**
-     * Database user
-     *
-     * @var string
-     */
-    private $user = null;
-
-    /**
-     * Database password
-     *
-     * @var string
-     */
-    private $password = null;
 
     /**
      * Database table
@@ -121,19 +107,15 @@ class IDS_Log_Database implements IDS_Log_Interface
      * 
      * @return void
      */
-    
+        
     protected function __construct($config) 
     {
         if ($config instanceof IDS_Init) {
             $this->wrapper  = $config->config['Logging']['wrapper'];
-            $this->user     = $config->config['Logging']['user'];
-            $this->password = $config->config['Logging']['password'];
             $this->table    = $config->config['Logging']['table'];
 
         } elseif (is_array($config)) {
             $this->wrapper  = $config['wrapper'];
-            $this->user     = $config['user'];
-            $this->password = $config['password'];
             $this->table    = $config['table'];
         }
 
@@ -142,38 +124,6 @@ class IDS_Log_Database implements IDS_Log_Interface
             $this->ip = $_SERVER['REMOTE_ADDR'];
         } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-
-        try {
-            $this->handle = new PDO(
-                $this->wrapper,
-                $this->user,
-                $this->password
-            );
-
-            $this->statement = $this->handle->prepare('
-                INSERT INTO ' . $this->table . ' (
-                    name,
-                    value,
-                    page,
-                    ip,
-                    impact,
-                    origin,
-                    created
-                )
-                VALUES (
-                    :name,
-                    :value,
-                    :page,
-                    :ip,
-                    :impact,
-                    :origin,
-                    now()
-                )
-            ');
-
-        } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
         }
     }
 
@@ -184,10 +134,11 @@ class IDS_Log_Database implements IDS_Log_Interface
      * an array.
      *
      * @param mixed $config IDS_Init | array
+     * @param string the class name to use
      * 
      * @return object $this
      */
-    public static function getInstance($config)
+    public static function getInstance($config, $classname = 'IDS_Log_Database')
     {
         if ($config instanceof IDS_Init) {
             $wrapper = $config->config['Logging']['wrapper'];
@@ -196,7 +147,7 @@ class IDS_Log_Database implements IDS_Log_Interface
         }
 
         if (!isset(self::$instances[$wrapper])) {
-            self::$instances[$wrapper] = new IDS_Log_Database($config);
+            self::$instances[$wrapper] = new $classname($config);
         }
 
         return self::$instances[$wrapper];
@@ -231,23 +182,23 @@ class IDS_Log_Database implements IDS_Log_Interface
         }     	
 
         foreach ($data as $event) {
-            $page = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-            $ip   = $this->ip;
-
-            $this->statement->bindParam('name', $event->getName());
-            $this->statement->bindParam('value', $event->getValue());
-            $this->statement->bindParam('page', $page);
-            $this->statement->bindParam('ip', $ip);
-            $this->statement->bindParam('impact', $data->getImpact());
-            $this->statement->bindParam('origin', $_SERVER['SERVER_ADDR']);
-
-            if (!$this->statement->execute()) {
-
-                $info = $this->statement->errorInfo();
-                throw new Exception(
-                    $this->statement->errorCode() . ', ' . $info[1] . ', ' . $info[2]
-                );
-            }
+        	$name   = $event->getName();
+        	$value  = $event->getValue();
+        	$page 	= isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+        	$ip   	= $this->ip;        	            
+            $impact = $event->getImpact();
+            
+        	$fieldValues = array(
+				'name' => $GLOBALS['TYPO3_DB']->quoteStr($name, $this->table),
+        		'value' => $GLOBALS['TYPO3_DB']->quoteStr($value, $this->table),
+        		'page' => $GLOBALS['TYPO3_DB']->quoteStr($page, $this->table),
+        		'ip' => $GLOBALS['TYPO3_DB']->quoteStr($ip, $this->table),
+        		'impact' => $GLOBALS['TYPO3_DB']->quoteStr($impact, $this->table),        
+        		'origin' => $GLOBALS['TYPO3_DB']->quoteStr($_SERVER['SERVER_ADDR'], $this->table),        
+        		'created' => date('Y-m-d H:i:s'),                	        	
+			);
+			$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery($this->table, $fieldValues);
+			if(!$res){ die('ERROR STORING IMPACT IN DB'); }			
         }
 
         return true;

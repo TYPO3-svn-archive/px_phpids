@@ -1,11 +1,7 @@
-09-06-17 Pascal Naujoks  <pascal.naujoks@pixabit.de>
-
-	* Released version 1.0.7
-
-09-06-04 Pascal Naujoks  <pascal.naujoks@pixabit.de>
-
-	* Created Backend Module
-
-09-06-01 Pascal Naujoks  <pascal.naujoks@pixabit.de>
-
-	* Initial release
+* 1.1.3: - Updated the manual
+* 1.1.2: - Updated filter rules
+* 1.1.1: - Fix in DB Wrapper
+* 1.1.0: - Settings moved to TypoScript - More features in the backend module
+* 1.0.6: - DB-Fix
+* 1.0.5: - Fix in Database
+* 1.0.4: - Updated Converter.php - Minor Code fixes - Updated manual.sxw

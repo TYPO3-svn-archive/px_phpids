@@ -5,25 +5,25 @@
 		<description>Language labels for module &quot;tools_txpxphpidsM1&quot;</description>
 	</meta>
 	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="title">PHPIDS</label>
-			<label index="function1">Show all impacts</label>
-			<label index="function2">Clear the log table</label>
-            <label index="function3">Clear the cache table</label>
-            <label index="function4">Show settings</label>
-			<label index="function1_text">This shows all impacts with an impact level higher then the value you specified in the TypoScript object "Impact.db_threshold".</label>
-            <label index="function1_text_find_more">You can find all impacts in the logfile you specified in TypoScript object "Logging.path".</label>
-            <label index="function1_text_check">In the TypoScript Objects of PHPIDS you can set "General.debug_mode" to true to check if PHPIDS works correctly.</label>
-            <label index="function2_text">This will set all DB entries in the tx_pxphpids_log table to deleted=1 and no longer show them in "Show all impacts". Are you sure you want to do that?</label>
-            <label index="function2_text_del_ok">Successfully set all entrys in the tx_pxphpids_log table to deleted=1.</label>
-			<label index="function3_text">This will truncate the tx_pxphpids_cache table and delete all of its records. Are you sure you want to do that?</label>
-            <label index="function3_text_del_ok">Successfully truncated tx_pxphpids_cache.</label>
-            <label index="function4_text">This are the current PHPIDS settings. You can modify them with your TypoScript Object Browser.</label>
-            <label index="open_link">Open this link in a new window</label>
-            <label index="attack_from">Click to see where this attack came from</label>
-            <label index="attack_to">Click to see which IP was attacked</label>
-            <label index="sql_no_data">No data found.</label>
-            <label index="sql_exec_error">Error executing the query!</label>
-		</languageKey>
+            <languageKey index="default" type="array">
+                <label index="title">PHPIDS</label>
+                <label index="function1">Show all impacts</label>
+                <label index="function2">Clear the log table</label>
+                <label index="function3">Clear the cache table</label>
+                <label index="function4">Show settings</label>
+                <label index="function1_text">This shows all impacts with an impact level higher then the value you specified in the TypoScript object "Impact.db_threshold".</label>
+                <label index="function1_text_find_more">You can find all impacts in the logfile you specified in the TypoScript object "Logging.path".</label>
+                <label index="function1_text_check">In the TypoScript Objects of PHPIDS you can set "General.debug_mode" to true to check if PHPIDS works correctly.</label>
+                <label index="function2_text">This will set all DB entries in the tx_pxphpids_log table to deleted=1 and no longer show them in "Show all impacts". Are you sure you want to do that?</label>
+                <label index="function2_text_del_ok">Successfully set all entrys in the tx_pxphpids_log table to deleted=1.</label>
+                <label index="function3_text">This will truncate the tx_pxphpids_cache table and delete all of its records. Are you sure you want to do that?</label>
+                <label index="function3_text_del_ok">Successfully truncated tx_pxphpids_cache.</label>
+                <label index="function4_text">This are the current PHPIDS settings. You can modify them with your TypoScript Object Browser.</label>
+                <label index="open_link">Open this link in a new window</label>
+                <label index="attack_from">Click to see where this attack came from</label>
+                <label index="attack_to">Click to see where the IP is located which was attacked</label>
+                <label index="sql_no_data">No data found.</label>
+                <label index="sql_exec_error">Error executing the query!</label>
+            </languageKey>
 	</data>
 </T3locallang>

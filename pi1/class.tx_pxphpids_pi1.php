@@ -26,17 +26,17 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
 
 
 /**
- * Plugin 'PHPIDS' for the 'px_phpids' extension.
+ * Plugin 'PHPIDS for Typo3' for the 'px_phpids' extension.
  *
  * @author	pixabit GmbH / Pascal Naujoks <pascal.naujoks@pixabit.de>
  * @package	TYPO3
- * @subpackage	tx_pxphpids
+ * @subpackage	tx_pxphpids *
  */
 class tx_pxphpids_pi1 extends tslib_pibase {
 	var $prefixId      = 'tx_pxphpids_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_pxphpids_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'px_phpids';	// The extension key.
-    var $conf;
+        var $conf;
 
 	/**
 	 * The main method of the PlugIn
@@ -48,10 +48,17 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 	function main($content,$conf)	{
         $this->pi_USER_INT_obj=1;
         $this->conf = $conf;
+        
+        $this->conf['General.']['exceptions'][] = 'COOKIE.__utmz'; // No Google Analytics...
+        $this->conf['General.']['exceptions'][] = 'COOKIE.__utmc'; // ... false positives
+        
+        // Hook for importing exceptions from constant editor
+        $this->conf['General.']['exceptions'][] = $this->conf['General.']['exceptions_0'];
+        $this->conf['General.']['exceptions'][] = $this->conf['General.']['exceptions_1'];
+        $this->conf['General.']['exceptions'][] = $this->conf['General.']['exceptions_2'];
+        unset($this->conf['General.']['exceptions_0'],$this->conf['General.']['exceptions_1'],$this->conf['General.']['exceptions_2']);
 
-		/*
-         * Settings
-         */
+		// Settings
         $this->path = t3lib_extMgm::extPath('px_phpids');       // Define Path to PHP IDS
         $this->debug = $this->conf['General.']['debug_mode']=='1' ? true : false;   // Debug Mode true or false
 
@@ -68,7 +75,7 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 
         require_once 'IDS/Init.php';
 
-        $content='<h6>PHPIDS</h6>';
+        $content='<h6>PHPIDS version is 0.6.3.1</h6>';
 
         try{
             /*
@@ -102,17 +109,11 @@ class tx_pxphpids_pi1 extends tslib_pibase {
             $init->config['General']['base_path'] = $this->path.'IDS/';
 
             $init->config['Logging'] = $this->conf['Logging.'];
-            $init->config['Logging']['user'] = TYPO3_db_username;
-            $init->config['Logging']['password'] = TYPO3_db_password;
             $init->config['Logging']['table'] = 'tx_pxphpids_log';
-            $init->config['Logging']['wrapper'] = 'mysql:'.TYPO3_db_host.';port=3306;dbname='. TYPO3_db;
             $init->config['Logging']['recipients'] = $this->conf['Logging.']['email'] ? $this->conf['Logging.']['email'] : $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 
             $init->config['Caching'] = $this->conf['Caching.'];
-            $init->config['Caching']['user'] = TYPO3_db_username;
-            $init->config['Caching']['password'] = TYPO3_db_password;
-            $init->config['Caching']['table'] = 'tx_pxphpids_cache';
-            $init->config['Caching']['wrapper'] =  'mysql:'.TYPO3_db_host.';port=3306;dbname='. TYPO3_db;
+            $init->config['Caching']['table'] = 'tx_pxphpids_cache';            
 
              // Initiate the PHPIDS and fetch the results
             $ids = new IDS_Monitor($request, $init);
@@ -178,19 +179,18 @@ class tx_pxphpids_pi1 extends tslib_pibase {
 
                 $compositeLog->execute($result);
             } else {
-                $content.='<p class="red_box"><a href="?test=%22><script>eval(window.name)</script>">No attack detected - click for an example attack</a></p>';
+                $content.='	<p class="red_box">
+								<a href="?test=%22><script>eval(window.name)</script>">No attack detected - click for an example attack</a>
+								<br />
+								You can disable this message by setting "General.debug_mode" to false in the TypoScript Objects of PHPIDS.	
+							</p>';				
             }
 
         } catch (Exception $e) {
-            /*
-            * sth went terribly wrong - maybe the
-            * filter rules weren't found?
-            */
             $content.='<p class="error_box">An error occurred: '.$e->getMessage().'</p>';
             $content.='<p class="error_box">Settings in $this->conf<pre>'.print_r($this->conf,true).'</pre></p>';
-            #$content.='<p class="error_box">Settings in $init->config<pre>'.print_r($init->config,true).'</pre></p>'; //  DB Connection settings are shown here!
+            $content.='<p class="error_box">Settings in $init->config<pre>'.print_r($init->config,true).'</pre></p>';
         }
-
         if($this->debug==true){
             return $this->pi_wrapInBaseClass($content);
         }

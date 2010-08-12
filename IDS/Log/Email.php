@@ -9,16 +9,16 @@
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, version 3 of the License, or
+ * the Free Software Foundation, version 3 of the License, or 
  * (at your option) any later version.
  *
  * PHPIDS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with PHPIDS. If not, see <http://www.gnu.org/licenses/>.
+ * along with PHPIDS. If not, see <http://www.gnu.org/licenses/>. 
  *
  * PHP version 5.1.6+
  *
@@ -44,7 +44,7 @@ require_once 'IDS/Log/Interface.php';
  * @author    Christian Matthies <ch0012@gmail.com>
  * @author    Mario Heiderich <mario.heiderich@gmail.com>
  * @author    Lars Strojny <lars@strojny.net>
- * @copyright 2007 The PHPIDS Group
+ * @copyright 2007-2009 The PHPIDS Group
  * @license   http://www.gnu.org/licenses/lgpl.html LGPL
  * @version   Release: $Id:Email.php 517 2007-09-15 15:04:13Z mario $
  * @link      http://php-ids.org/
@@ -57,21 +57,21 @@ class IDS_Log_Email implements IDS_Log_Interface
      *
      * @var array
      */
-    private $recipients    = array();
+    protected $recipients    = array();
 
     /**
      * Mail subject
      *
      * @var string
      */
-    private $subject = null;
+    protected $subject = null;
 
     /**
      * Additional mail headers
      *
      * @var string
      */
-    private $headers = null;
+    protected $headers = null;
 
     /**
      * Safemode switch
@@ -81,18 +81,18 @@ class IDS_Log_Email implements IDS_Log_Interface
      *
      * @var boolean
      */
-    private $safemode = true;
+    protected $safemode = true;
 
     /**
      * Urlencode for result strings
      *
-     * This switch is true by default. Setting it to false removes
-     * the 'better safe than sorry' urlencoding for the result string in
+     * This switch is true by default. Setting it to false removes 
+     * the 'better safe than sorry' urlencoding for the result string in 
      * the report mails. Enhances readability but maybe XSSes email clients.
      *
      * @var boolean
      */
-    private $urlencode = true;
+    protected $urlencode = true;
 
     /**
      * Send rate
@@ -103,7 +103,7 @@ class IDS_Log_Email implements IDS_Log_Interface
      *
      * @var integer
      */
-    private $allowed_rate = 15;
+    protected $allowed_rate = 15;
 
     /**
      * PHPIDS temp directory
@@ -113,28 +113,28 @@ class IDS_Log_Email implements IDS_Log_Interface
      *
      * @var string
      */
-    private $tmp_path = 'IDS/tmp/';
+    protected $tmp_path = 'IDS/tmp/';
 
     /**
      * File prefix for tmp files
      *
      * @var string
      */
-    private $file_prefix = 'PHPIDS_Log_Email_';
+    protected $file_prefix = 'PHPIDS_Log_Email_';
 
     /**
      * Holds current remote address
      *
      * @var string
      */
-    private $ip = 'local/unknown';
+    protected $ip = 'local/unknown';
 
     /**
      * Instance container
      *
      * @var array
      */
-    private static $instance = array();
+    protected static $instance = array();
 
     /**
      * Constructor
@@ -154,7 +154,7 @@ class IDS_Log_Email implements IDS_Log_Interface
             $this->safemode     = $config->config['Logging']['safemode'];
             $this->urlencode    = $config->config['Logging']['urlencode'];
             $this->allowed_rate = $config->config['Logging']['allowed_rate'];
-            $this->tmp_path     = $config->getBasePath()
+            $this->tmp_path     = $config->getBasePath() 
                 . $config->config['General']['tmp_path'];
 
         } elseif (is_array($config)) {
@@ -175,14 +175,15 @@ class IDS_Log_Email implements IDS_Log_Interface
      * This method allows the passed argument to be either an instance of
      * IDS_Init or an array.
      *
-     * @param mixed $config IDS_Init | array
+     * @param mixed  $config IDS_Init | array
+     * @param string the class name to use
      *
      * @return object $this
      */
-    public static function getInstance($config)
+    public static function getInstance($config, $classname = 'IDS_Log_Email')
     {
         if (!self::$instance) {
-            self::$instance = new IDS_Log_Email($config);
+            self::$instance = new $classname($config);
         }
 
         return self::$instance;
@@ -270,23 +271,28 @@ class IDS_Log_Email implements IDS_Log_Interface
     protected function prepareData($data)
     {
 
-        $format  = "The following attack has been detected by PHPIDS on ".$_SERVER['SERVER_NAME']." (".$_SERVER['SERVER_ADDR'].")\n\n";
+        $format  = "The following attack has been detected by PHPIDS for Typo3 on ".$_SERVER['SERVER_NAME']." (".$_SERVER['SERVER_ADDR'].")\n\n";
         $format .= "IP: %s \n";
         $format .= "Date: %s \n";
-        $format .= "Impact: %d \n";
-        $format .= "Affected tags: %s \n";
+        $format .= "Impact: %d \n\n";
+        $format .= "Affected tags: %s \n\n";
 
         $attackedParameters = '';
         foreach ($data as $event) {
             $attackedParameters .= $event->getName() . '=' .
-                ((!isset($this->urlencode) ||$this->urlencode)
-                	? urlencode($event->getValue())
+                ((!isset($this->urlencode) ||$this->urlencode) 
+                	? urlencode($event->getValue()) 
                 	: $event->getValue()) . ", ";
         }
 
-        $format .= "Affected parameters: %s \n";
-        $format .= "Request URI: %s \n";
-        $format .= "Origin: %s \n";
+$format .= "Affected parameters: %s \n\n";
+        $format .= "Affected parameters (url encoded): %s \n\n";
+        $format .= "Request URI: %s \n\n";
+        $format .= "Request URI (url encoded): %s \n\n";
+        $format .= "--\n";
+        $format .= "Don't know what to do now?\n";
+        $format .= "Contact us at www.pixabit.de so we can help you securing your Typo3 installation.\n";
+
 
         return sprintf($format,
                        $this->ip,
@@ -294,8 +300,10 @@ class IDS_Log_Email implements IDS_Log_Interface
                        $data->getImpact(),
                        join(' ', $data->getTags()),
                        trim($attackedParameters),
-                       urlencode($_SERVER['REQUEST_URI']),
-                       $_SERVER['SERVER_ADDR']);
+                       trim(urlencode($attackedParameters)),
+                       trim($_SERVER['REQUEST_URI']),
+                       trim(urlencode($_SERVER['REQUEST_URI']))
+                   );
     }
 
     /**
@@ -358,11 +366,10 @@ class IDS_Log_Email implements IDS_Log_Interface
                     'Please make sure that you specified an E-Mail address in Logging.email or $TYPO3_CONF_VARS[\'BE\'][\'warning_email_addr\']'
                 );
             }
-
+            
         } else {
             throw new Exception(
-                'Please make sure that data returned by
-                 IDS_Log_Email::prepareData() is a string.'
+                'Please make sure that data returned by IDS_Log_Email::prepareData() is a string.'
             );
         }
 

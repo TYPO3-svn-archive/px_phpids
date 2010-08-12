@@ -13,7 +13,7 @@ plugin.tx_pxphpids_pi1 {
     Impact.die_threshold    = 75
 
     # cat=px_phpids; type=boolean; label=Debug Mode: Turn on or off debug mode.
-    General.debug_mode     = 1
+    General.debug_mode     = 0
 
     # cat=px_phpids; type=text; label=Filter Typ: Choose your filter type. Default is XML
     General.filter_type     = xml
@@ -43,13 +43,13 @@ plugin.tx_pxphpids_pi1 {
     General.json          = __jsondata
 
     # cat=px_phpids; type=text; label=Exception 1: Define which fields shouldn't be monitored
-    General.exceptions_0    = __utmz
+    General.exceptions_0    = GET.EXAMPLE1
 
     # cat=px_phpids; type=text; label=Exception 2: Define which fields shouldn't be monitored
-    General.exceptions_1    = __utmc
+    General.exceptions_1    = POST.EXAMPLE2
 
     # cat=px_phpids; type=text; label=Exception 3: Define which fields shouldn't be monitored
-    General.exceptions_2    =
+    General.exceptions_2    = COOKIE.EXAMPLE3
 
     # cat=px_phpids; type=text; label=Min PHP Version: PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
     General.min_php_version = 5.1.6
@@ -73,7 +73,7 @@ plugin.tx_pxphpids_pi1 {
     Logging.allowed_rate    = 15
 
     # cat=px_phpids; type=options[session,file,database,memcached,none]; label=Caching method: Default is file
-    Caching.caching         = database
+    Caching.caching         = file
 
     # cat=px_phpids; type=int; label=Caching expiration time: Default is 600
     Caching.expiration_time = 600

@@ -34,6 +34,26 @@
 require_once 'IDS/Caching/Interface.php';
 
 /**
+ * Needed SQL:
+ *
+
+    #create the database
+
+    CREATE DATABASE IF NOT EXISTS `phpids` DEFAULT CHARACTER 
+        SET utf8 COLLATE utf8_general_ci;
+    DROP TABLE IF EXISTS `cache`;
+
+    #now select the created datbase and create the table
+
+    CREATE TABLE `cache` (
+        `type` VARCHAR( 32 ) NOT null ,
+        `data` TEXT NOT null ,
+        `created` DATETIME NOT null ,
+        `modified` DATETIME NOT null
+    ) ENGINE = MYISAM ;
+ */
+
+/**
  * Database caching wrapper
  *
  * This class inhabits functionality to get and set cache via a database.
@@ -43,7 +63,7 @@ require_once 'IDS/Caching/Interface.php';
  * @author    Christian Matthies <ch0012@gmail.com>
  * @author    Mario Heiderich <mario.heiderich@gmail.com>
  * @author    Lars Strojny <lars@strojny.net>
- * @copyright 2007 The PHPIDS Groupup
+ * @copyright 2007-2009 The PHPIDS Groupup
  * @license   http://www.gnu.org/licenses/lgpl.html LGPL
  * @version   Release: $Id:Database.php 517 2007-09-15 15:04:13Z mario $
  * @link      http://php-ids.org/
@@ -90,12 +110,11 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * 
      * @return void
      */
-    public function __construct($type, $init)
+    public function __construct($type, $init) 
     {
-
+    
         $this->type   = $type;
         $this->config = $init->config['Caching'];
-        $this->handle = $this->_connect();
     }
 
     /**
@@ -108,7 +127,6 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      */
     public static function getInstance($type, $init)
     {
-
         if (!self::$cachingInstance) {
             self::$cachingInstance = new IDS_Caching_Database($type, $init);
         }
@@ -123,27 +141,22 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * @throws PDOException if a db error occurred
      * @return object $this
      */
-    public function setCache(array $data) 
-    {
-
-        $handle = $this->handle;
-        
-        $rows = $handle->query('SELECT created FROM `' . 
-            $handle->quote($this->config['table']).'`');
+    public function setCache(array $data){
             
-        if (!$rows || $rows->rowCount() === 0) {
-        
-            $this->_write($handle, $data);             
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('created', $this->config['table'], '1');
+		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)>0) {
+			$rows = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		}
+            
+        if (!$rows || $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 0) {        
+            $this->_write($data);             
         } else {
-
-            foreach ($rows as $row) {
-                
+            foreach ($rows as $row) {                
                 if ((time()-strtotime($row['created'])) > 
                   $this->config['expiration_time']) {
-                  
-                    $this->_write($handle, $data);  
+                  $this->_write($data);  
                 }
-            }        
+            }
         }
 
         return $this;
@@ -160,56 +173,15 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      */
     public function getCache() 
     {
-
-        try{
-            $handle = $this->handle;
-            $result = $handle->prepare('SELECT * FROM ' . 
-                $handle->quote($this->config['table']) . 
-                ' where type=?');
-            $result->execute(array($this->type));
-
+    	$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->config['table'], 'type="'.$this->type.'"');
+		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+			$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
             foreach ($result as $row) {
-                return unserialize($row['phpids_data']);    // was: data
-            }
-
-        } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
-        }
+                return unserialize($row['data']);
+            }			
+		}
+        
         return false;
-    }
-
-    /**
-     * Connect to database and return a handle
-     *
-     * @return object dbh
-     * @throws PDOException if a db error occurred
-     */
-    private function _connect() 
-    {
-
-        // validate connection parameters
-        if (!$this->config['wrapper']
-            || !$this->config['user']
-                || !$this->config['password']
-                    || !$this->config['table']) {
-
-            throw new Exception('
-                Insufficient connection parameters'
-            );
-        }
-
-        // try to connect
-        try {
-            $handle = new PDO(
-                $this->config['wrapper'],
-                $this->config['user'],
-                $this->config['password']
-            );
-
-        } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
-        }
-        return $handle;
     }
     
     /**
@@ -221,39 +193,16 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * @return object dbh
      * @throws PDOException if a db error occurred
      */    
-    private function _write($handle, $data) 
+    private function _write($data) 
     {
-        
-        try {
-            $handle->query('TRUNCATE ' . 
-                $this->config['table'].'');
-            $statement = $handle->prepare('
-                INSERT INTO `' . 
-                $this->config['table'].'` (
-                    type,
-                    phpids_data,
-                    created,
-                    modified
-                )
-                VALUES (
-                    :type,
-                    :phpids_data,
-                    now(),
-                    now()
-                )
-            ');
-    
-            $statement->bindParam('type', 
-                $handle->quote($this->type));
-            $statement->bindParam('phpids_data', serialize($data));
-    
-            if (!$statement->execute()) {
-                throw new PDOException($statement->errorCode());
-            }
-    
-        } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
-        }    
+        $res = mysql(TYPO3_db,'TRUNCATE '.$this->config['table']);
+        $fieldValues = array(
+			'type' => $GLOBALS['TYPO3_DB']->quoteStr($this->type, $this->config['table']),
+			'phpids_data' => $GLOBALS['TYPO3_DB']->quoteStr(serialize($data), $this->config['table']),
+			'created' => $GLOBALS['TYPO3_DB']->quoteStr(date('Y-m-d H:i:s'), $this->config['table']),
+			'modified' => $GLOBALS['TYPO3_DB']->quoteStr(date('Y-m-d H:i:s'), $this->config['table']),
+		);
+		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery($this->config['table'], $fieldValues);
     }
 }
 
