@@ -4,13 +4,13 @@ plugin.tx_pxphpids_pi1 {
     Impact.file_threshold   = 1
 
     # cat=px_phpids; type=int; label=DB Threshold: Threshold for reporting an impact to the database shown in the PHPIDS backend module
-    Impact.db_threshold     = 25
+    Impact.db_threshold     = 20
 
     # cat=px_phpids; type=int; label=EMail Threshold: Threshold for reporting an impact by e-mail specified in Logging.email
     Impact.email_threshold  = 50
 
     # cat=px_phpids; type=int; label=Die Threshold: Treshold for locking the homepage to the attacker with a session_destroy() and PHP die()
-    Impact.die_threshold    = 75
+    Impact.die_threshold    = 65
 
     # cat=px_phpids; type=boolean; label=Debug Mode: Turn on or off debug mode.
     General.debug_mode     = 0
@@ -49,7 +49,7 @@ plugin.tx_pxphpids_pi1 {
     General.exceptions_1    = POST.EXAMPLE2
 
     # cat=px_phpids; type=text; label=Exception 3: Define which fields shouldn't be monitored
-    General.exceptions_2    = COOKIE.EXAMPLE3
+    General.exceptions_2    = COOKIE.__utmz
 
     # cat=px_phpids; type=text; label=Min PHP Version: PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
     General.min_php_version = 5.1.6

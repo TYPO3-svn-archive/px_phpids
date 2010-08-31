@@ -255,8 +255,7 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 
 			case 3: // Function to truncate the tx_pxphpids_cache table
 				if((string)$_REQUEST['del']=='true'){
-					$sql = 'TRUNCATE tx_pxphpids_cache';
-					$res = mysql(TYPO3_db,$sql);
+					$res = mysql_query('TRUNCATE tx_pxphpids_cache');
 					if($res){
 						$content.='<p class="typo3-message message-ok">'.$LANG->getLL('function3_text_del_ok').'</p>';
 					}else{
