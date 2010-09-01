@@ -18,14 +18,14 @@ plugin.tx_pxphpids_pi1 {
     # cat=plugin.px_phpids/enable/006; type=int; label=Die Threshold: Treshold for locking the homepage to the attacker with a session_destroy() and PHP die()
     Impact.die_threshold    = 65
 
-    # cat=plugin.px_phpids/enable/007; type=text; label=Exception 1: Define which fields shouldn't be monitored
+    # cat=plugin.px_phpids/enable/007; type=text; label=Exception 1: Define which fields shouldn't be monitored. You can also make a comma separated list
     General.exceptions_0    = GET.EXAMPLE1
 
-    # cat=plugin.px_phpids/enable/008; type=text; label=Exception 2: Define which fields shouldn't be monitored
+    # cat=plugin.px_phpids/enable/008; type=text; label=Exception 2: Define which fields shouldn't be monitored. You can also make a comma separated list
     General.exceptions_1    = POST.EXAMPLE2
 
-    # cat=plugin.px_phpids/enable/009; type=text; label=Exception 3: Define which fields shouldn't be monitored
-    General.exceptions_2    = COOKIE.__utmz
+    # cat=plugin.px_phpids/enable/009; type=text; label=Exception 3: Define which fields shouldn't be monitored. You can also make a comma separated list
+    General.exceptions_2    = COOKIE.__utmz,COOKIE.__utmc
 
     # cat=plugin.px_phpids/enable/010; type=text; label=HTML: Define which fields contain html and need preparation before hitting the PHPIDS rules
     General.html          	= __wysiwyg
@@ -39,10 +39,10 @@ plugin.tx_pxphpids_pi1 {
     General.use_base_path   = 1
     
     # cat=plugin.px_phpids/file/002; type=text; label=Tmp path: Choose your temp path. Default is tmp
-    General.tmp_path        = tmp    
+    General.tmp_path        = tmp
     
     # cat=plugin.px_phpids/file/003; type=text; label=File logging: If you use the PHPIDS logger you can define specific configuration here
-    Logging.path 			= tmp/phpids_log.txt    
+    Logging.path 			= tmp/phpids_log.txt
     
     # cat=plugin.px_phpids/file/004; type=text; label=File cache: Default is tmp/default_filter.cache
     Caching.path 			= tmp/default_filter.cache

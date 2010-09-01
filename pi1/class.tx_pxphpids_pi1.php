@@ -49,13 +49,12 @@ class tx_pxphpids_pi1 extends tslib_pibase {
         $this->pi_USER_INT_obj=1;
         $this->conf = $conf;
         
-        $this->conf['General.']['exceptions'][] = 'COOKIE.__utmz'; // No Google Analytics...
-        $this->conf['General.']['exceptions'][] = 'COOKIE.__utmc'; // ... false positives
+		$this->conf['General.']['exceptions'] = array();
         
-        // Hook for importing exceptions from constant editor
-        $this->conf['General.']['exceptions'][] = $this->conf['General.']['exceptions_0'];
-        $this->conf['General.']['exceptions'][] = $this->conf['General.']['exceptions_1'];
-        $this->conf['General.']['exceptions'][] = $this->conf['General.']['exceptions_2'];
+        // Hook for importing exceptions from constant editor		
+		$this->conf['General.']['exceptions'] = array_merge(explode(',',$this->conf['General.']['exceptions_0']), $this->conf['General.']['exceptions']);
+		$this->conf['General.']['exceptions'] = array_merge(explode(',',$this->conf['General.']['exceptions_1']), $this->conf['General.']['exceptions']);
+		$this->conf['General.']['exceptions'] = array_merge(explode(',',$this->conf['General.']['exceptions_2']), $this->conf['General.']['exceptions']);
         unset($this->conf['General.']['exceptions_0'],$this->conf['General.']['exceptions_1'],$this->conf['General.']['exceptions_2']);
 
 		// Settings
