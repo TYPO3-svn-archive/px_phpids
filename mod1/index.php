@@ -199,13 +199,13 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
 								<table class="typo3-dblist" cellspacing="0" cellpadding="0" border="0">
 									<tbody>
 										<tr class="c-headLine">
-											<td class="col-title" style="width:150px"><a href="index.php?order=name'.($req_ord=='name' ? $direction : urlencode(' ASC')).'">Name '.($req_ord=='name' ? $arrow : '').'</a></td>
-											<td class="col-title" style="width:375px"><a href="index.php?order=value'.($req_ord=='value' ? $direction : urlencode(' ASC')).'">Value '.($req_ord=='value' ? $arrow : '').'</a></td>
-											<td class="col-title" style="width:375px"><a href="index.php?order=page'.($req_ord=='page' ? $direction : urlencode(' ASC')).'">Page '.($req_ord=='page' ? $arrow : '').'</a></td>
-											<td class="col-title" style="width:100px"><a href="index.php?order=ip'.($req_ord=='ip' ? $direction : urlencode(' ASC')).'">IP '.($req_ord=='ip' ? $arrow : '').'</a></td>
-											<td class="col-title" style="width:100px"><a href="index.php?order=origin'.($req_ord=='paymenttitle' ? $direction : urlencode(' ASC')).'">Origin '.($req_ord=='origin' ? $arrow : '').'</a></td>
-											<td class="col-title" style="width:100px"><a href="index.php?order=created'.($req_ord=='created' ? $direction : urlencode(' ASC')).'">Created '.($req_ord=='created' ? $arrow : '').'</a></td>
-	                                        <td class="col-title" style="width:75px; text-align:center;"><a href="index.php?order=impact'.($req_ord=='impact' ? $direction : urlencode(' DESC')).'">Impact '.($req_ord=='impact' ? $arrow : '').'</a></td>
+											<td class="col-title"><a style="width:150px" href="index.php?order=name'.($req_ord=='name' ? $direction : urlencode(' ASC')).'">Name '.($req_ord=='name' ? $arrow : '').'</a></td>
+											<td class="col-title"><a style="width:375px" href="index.php?order=value'.($req_ord=='value' ? $direction : urlencode(' ASC')).'">Value '.($req_ord=='value' ? $arrow : '').'</a></td>
+											<td class="col-title"><a style="width:375px" href="index.php?order=page'.($req_ord=='page' ? $direction : urlencode(' ASC')).'">Page '.($req_ord=='page' ? $arrow : '').'</a></td>
+											<td class="col-title"><a style="width:100px" href="index.php?order=ip'.($req_ord=='ip' ? $direction : urlencode(' ASC')).'">IP '.($req_ord=='ip' ? $arrow : '').'</a></td>
+											<td class="col-title"><a style="width:100px" href="index.php?order=origin'.($req_ord=='paymenttitle' ? $direction : urlencode(' ASC')).'">Origin '.($req_ord=='origin' ? $arrow : '').'</a></td>
+											<td class="col-title"><a style="width:100px" href="index.php?order=created'.($req_ord=='created' ? $direction : urlencode(' ASC')).'">Created '.($req_ord=='created' ? $arrow : '').'</a></td>
+	                                        <td class="col-title"><a style="width:75px; text-align:center;" href="index.php?order=impact'.($req_ord=='impact' ? $direction : urlencode(' DESC')).'">Impact '.($req_ord=='impact' ? $arrow : '').'</a></td>
 										</tr>
 						';
 
@@ -281,19 +281,19 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
     }
 
     function impactBrowser() {
-        $content ='';
-        $offset=50;
+        $content = '';
+        $offset = 50;
         $start = is_numeric($_REQUEST['start']) ? $_REQUEST['start'] : 0;
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_pxphpids_log', 'DELETED=0');
-        $rows=$GLOBALS["TYPO3_DB"]->sql_num_rows($res);
+        $res  = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_pxphpids_log', 'DELETED=0');
+        $rows = $GLOBALS["TYPO3_DB"]->sql_num_rows($res);
 
         if($start > 0) {
-            $content .= " <a href=\"index.php?start=0&amp;order=".$_REQUEST['order']."\">&laquo;</a> ";
+            $content .= ' <a href="index.php?start=0&amp;order='.$_REQUEST['order'].'">&laquo;</a> ';
             $back=$start-$offset;
             if($back < 0) {
                 $back = 0;
             }
-            $content .= " <a href=\"index.php?start=".$back."&amp;order=".$_REQUEST['order']."\">&lt;</a> ";
+            $content .= ' <a href="index.php?start='.$back.'&amp;order='.$_REQUEST['order'].'">&lt;</a> ';
         }
 
         if($rows>$offset) {
@@ -306,18 +306,18 @@ class  tx_pxphpids_module1 extends t3lib_SCbase {
         for ($i=1;$i<=$seiten;$i++) {
             $fwd=($i-1)*$offset;
             $x=$fwd+$offset;
-            $content .= " <a href=\"index.php?start=".$fwd."&amp;order=".$_REQUEST['order']."\">";
-            if($start==$fwd) $content .= "<b>";
-            $content .= "[".($fwd+1)."-".$x."]";
-            if($start==$fwd) $content .= "</b>";
-            $content .= "</a> ";
+            $content .= ' <a href=\"index.php?start='.$fwd.'&amp;order='.$_REQUEST['order'].'">';
+            if($start==$fwd) $content .= '<b>';
+            $content .= '['.($fwd+1).'-'.$x.']';
+            if($start==$fwd) $content .= '</b>';
+            $content .= '</a> ';
         }
 
         if($start < $rows-$offset && $rows>$offset) {
             $fwd=$start+$offset;
-            $content .= " <a href=\"index.php?start=".$fwd."&amp;order=".$_REQUEST['order']."\">&gt;</a> ";
+            $content .= ' <a href="index.php?start='.$fwd.'&amp;order='.$_REQUEST['order'].'">&gt;</a> ';
             $fwd=$rows-$offset;
-            $content .= " <a href=\"index.php?start=".$fwd."&amp;order=".$_REQUEST['order']."\">&raquo;</a> ";
+            $content .= ' <a href="index.php?start='.$fwd.'&amp;order='.$_REQUEST['order'].'">&raquo;</a> ';
         }
 
         return $content;
