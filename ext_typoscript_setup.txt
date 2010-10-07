@@ -4,7 +4,7 @@ plugin.tx_pxphpids_pi1 {
     Impact.db_threshold     = {$plugin.tx_pxphpids_pi1.Impact.db_threshold}
     Impact.email_threshold  = {$plugin.tx_pxphpids_pi1.Impact.email_threshold}
     Impact.die_threshold    = {$plugin.tx_pxphpids_pi1.Impact.die_threshold}
-    General.debug_mode      = {$plugin.tx_pxphpids_pi1.General.debug_mode}
+    General.debug_mode      = {$plugin.tx_pxphpids_pi1.General.debug_mode}    
     General.filter_type     = {$plugin.tx_pxphpids_pi1.General.filter_type}
     General.use_base_path   = {$plugin.tx_pxphpids_pi1.General.use_base_path}
     General.filter_path     = {$plugin.tx_pxphpids_pi1.General.filter_path}
@@ -17,6 +17,7 @@ plugin.tx_pxphpids_pi1 {
     General.exceptions_0    = {$plugin.tx_pxphpids_pi1.General.exceptions_0}
     General.exceptions_1    = {$plugin.tx_pxphpids_pi1.General.exceptions_1}
     General.exceptions_2    = {$plugin.tx_pxphpids_pi1.General.exceptions_2}
+    General.whitelist	    = {$plugin.tx_pxphpids_pi1.General.whitelist}
     General.min_php_version = {$plugin.tx_pxphpids_pi1.General.min_php_version}
     Logging.email           = {$plugin.tx_pxphpids_pi1.Logging.email}
     Logging.path            = {$plugin.tx_pxphpids_pi1.Logging.path}
